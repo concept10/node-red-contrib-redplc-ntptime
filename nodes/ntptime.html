@@ -1,0 +1,65 @@
+<!--
+  Copyright 2021 Ocean (iot.redplc@gmail.com).
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('ntptime', {
+        category: 'redPlc modules',
+        color: 'ORANGE',
+        paletteLabel: 'ntp time',
+        defaults: {
+            addressai:  { value: 123, required: true, validate: function (v) { return RED.validators.number(v) && (v >= 0) && (v <= 999); } },
+            ntpserver: { value: "time.google.com", required: true},
+            tupdate:  { value: 300,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 100) && (v <= 10000); } },
+            ampm: { value: false },
+            systime: { value: true }
+        },
+        inputs: 0,
+        outputs: 0,
+        inputLabels: "in:string",
+        outputLabels: ["out:string"],
+        icon: "font-awesome/fa-globe",
+        label: function() { return this.ntpserver },
+    });
+</script>
+
+<script type="text/html" data-template-name="ntptime">
+    <div class="form-row">
+        <label style="width:100%; border-bottom: 1px solid #eee;">redPlc NTP Server Time</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-addressai"><i class="fa fa-list"></i> Address <b>&nbsp;IA<b></label>
+        <input id="node-input-addressai" placeholder="Address" value=99 input type="number" min="0" max="999" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ntpserver"><i class="fa fa-globe"></i> NTP Server</label>
+        <input type="text" id="node-input-ntpserver" placeholder="NTP server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-tupdate"><i class="fa fa-refresh"></i> Update</label>
+        <input id="node-input-tupdate" placeholder="Update (ms)" input type="number" min="100" max="10000" required style="width: auto;">
+        <label> ms</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-ampm" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-ampm" style="width: 70%;"> 12-Hours (AM/PM)</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-systime" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-systime" style="width: 70%;"> Read Systemtime on Failure</label>
+    </div>
+</script>
