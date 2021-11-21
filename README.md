@@ -9,6 +9,7 @@
 - Reads time from NTP server and store in Node-Red global variable as array<br>
 - On read failure reads system time<br>
 - Update on cycle time interval<br>
+- Input message changes ntp-server name<br>
 
 
 ## Install

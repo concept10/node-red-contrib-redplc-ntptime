@@ -16,6 +16,10 @@
 
 <script type="text/html" data-help-name="ntptime">
     <p>redPlc NTP Server Time</p>
+    <h3><b>Input:</b></h3>
+    <dl class="message-properties">
+        <dt>IN: payload <span class="property-type">string</span></dt>
+    </dl>
     <h3><b>Variable:</b></h3>
         <dl class="message-properties">
             <dt>IA </b><i>adr[index]</i> NTP-Time<span class="property-type">number</span></dt>
@@ -33,5 +37,6 @@
         Reads NTP server time<br>
         and stores in global variable as array.<br>
         On server read fail system time is read.<br>
+        Input message changes ntp-server name.<br>
 	</p>
 </script>

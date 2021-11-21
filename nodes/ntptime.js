@@ -62,7 +62,7 @@ module.exports = function(RED) {
 
 			date.setUTCMilliseconds(date.getUTCMilliseconds() + (part1 * 1000 + (part2 * 1000) / 0x100000000));
 			setDateTime(date);
-			syslib.setStatus(node, node.tagnameai);
+			syslib.setStatus(node, node.tagnameai + " - " + node.ntpserver);
 			node.onWork = false;
 		});
 
@@ -80,7 +80,7 @@ module.exports = function(RED) {
                 if (err) {
 					if (node.systime) {
 						setDateTime(new Date());
-						syslib.setStatus(node, node.tagnameai);
+						syslib.setStatus(node, node.tagnameai + " - System-Time");
 					}
 					else
 						syslib.outError(node, "server failure", "server failure");
@@ -92,10 +92,13 @@ module.exports = function(RED) {
                 node.id_sendtimeout = setTimeout(function () {
 					if (node.systime) {
 						setDateTime(new Date());
-						syslib.setStatus(node, node.tagnameai);
+						syslib.setStatus(node, node.tagnameai + " - System-Time");
 					}
+					else
+						syslib.outError(node, "server failure", "server failure");
+
 					node.onWork = false;
-	            }, 3000);
+	            }, 5000);
             });
 		}
 
@@ -109,6 +112,13 @@ module.exports = function(RED) {
 		}
 
 		node.id_loop = setInterval(updateDateTime, node.tupdate);
+
+		node.on("input", function (msg) {
+			if (typeof msg.payload !== "string")
+				return;
+			
+			node.ntpserver = msg.payload;
+		});
 
 		node.on('close', function () {
 			clearTimeout(node.id_sendtimeout);
